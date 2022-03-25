@@ -1,0 +1,224 @@
+#NEXUS
+begin taxa;
+	dimensions ntax=130;
+	taxlabels
+	Epinecrophylla_amazonica_e1_LSU9217_0
+	Epinecrophylla_amazonica_e1_LSU9217_1
+	Epinecrophylla_amazonica_e2_LSUMZ31342_0
+	Epinecrophylla_amazonica_e2_LSUMZ31342_1
+	Epinecrophylla_amazonica_e3_MZUSP164_0
+	Epinecrophylla_amazonica_e3_MZUSP164_1
+	Epinecrophylla_amazonica_e5_LSUMZ75291_0
+	Epinecrophylla_amazonica_e5_LSUMZ75291_1
+	Epinecrophylla_dentei_e6_MZUSP80591_0
+	Epinecrophylla_dentei_e6_MZUSP80591_1
+	Epinecrophylla_erythrura_septentrionalis_e10_LSUMZ27716_0
+	Epinecrophylla_erythrura_septentrionalis_e10_LSUMZ27716_1
+	Epinecrophylla_fjeldsaai_e13_KU873_0
+	Epinecrophylla_fjeldsaai_e13_KU873_1
+	Epinecrophylla_fjeldsaai_hybrid_e15_LSUMZ42704_0
+	Epinecrophylla_fjeldsaai_hybrid_e15_LSUMZ42704_1
+	Epinecrophylla_fulviventris_costaricensis_e17_LSU2299_0
+	Epinecrophylla_fulviventris_costaricensis_e17_LSU2299_1
+	Epinecrophylla_fulviventris_costaricensis_e18_LSUMZ82086_0
+	Epinecrophylla_fulviventris_costaricensis_e18_LSUMZ82086_1
+	Epinecrophylla_gutturalis_e20_AMNH11921_0
+	Epinecrophylla_gutturalis_e20_AMNH11921_1
+	Epinecrophylla_gutturalis_e22_USNM609157_0
+	Epinecrophylla_gutturalis_e22_USNM609157_1
+	Epinecrophylla_gutturalis_e23_KU88801_0
+	Epinecrophylla_gutturalis_e23_KU88801_1
+	Epinecrophylla_gutturalis_e24_KU88804_0
+	Epinecrophylla_gutturalis_e24_KU88804_1
+	Epinecrophylla_gutturalis_e25_USNM586379_0
+	Epinecrophylla_gutturalis_e25_USNM586379_1
+	Epinecrophylla_gutturalis_e26_USNM587338_0
+	Epinecrophylla_gutturalis_e26_USNM587338_1
+	Epinecrophylla_gutturalis_e28_LSU55218_0
+	Epinecrophylla_gutturalis_e28_LSU55218_1
+	Epinecrophylla_gutturalis_e29_LSUMZ71576_0
+	Epinecrophylla_gutturalis_e29_LSUMZ71576_1
+	Epinecrophylla_gutturalis_e30_YPM101670_0
+	Epinecrophylla_gutturalis_e30_YPM101670_1
+	Epinecrophylla_gutturalis_e31_YPM137211_0
+	Epinecrophylla_gutturalis_e31_YPM137211_1
+	Epinecrophylla_gutturalis_e33_YPM139633_0
+	Epinecrophylla_gutturalis_e33_YPM139633_1
+	Epinecrophylla_gutturalis_e34_YPM139781_0
+	Epinecrophylla_gutturalis_e34_YPM139781_1
+	Epinecrophylla_gutturalis_e35_LSU20398_0
+	Epinecrophylla_gutturalis_e35_LSU20398_1
+	Epinecrophylla_haematonota_e36_LSU4579_0
+	Epinecrophylla_haematonota_e36_LSU4579_1
+	Epinecrophylla_haematonota_haematonota_e39_LSUMZ10790_0
+	Epinecrophylla_haematonota_haematonota_e39_LSUMZ10790_1
+	Epinecrophylla_haematonota_haematonota_e40_LSUMZ27427_0
+	Epinecrophylla_haematonota_haematonota_e40_LSUMZ27427_1
+	Epinecrophylla_haematonota_haematonota_e41_LSUMZ42282_0
+	Epinecrophylla_haematonota_haematonota_e41_LSUMZ42282_1
+	Epinecrophylla_haematonota_haematonota_e42_LSUMZ93087_0
+	Epinecrophylla_haematonota_haematonota_e42_LSUMZ93087_1
+	Epinecrophylla_leucophthalma_dissita_e43_LSUMZ75006_0
+	Epinecrophylla_leucophthalma_dissita_e43_LSUMZ75006_1
+	Epinecrophylla_leucophthalma_e49_LSU18242_0
+	Epinecrophylla_leucophthalma_e49_LSU18242_1
+	Epinecrophylla_leucophthalma_leucophthalma_e44_LSUMZ5392_0
+	Epinecrophylla_leucophthalma_leucophthalma_e44_LSUMZ5392_1
+	Epinecrophylla_leucophthalma_leucophthalma_e45_LSUMZ9173_0
+	Epinecrophylla_leucophthalma_leucophthalma_e45_LSUMZ9173_1
+	Epinecrophylla_leucophthalma_leucophthalma_e46_LSUMZ10538_0
+	Epinecrophylla_leucophthalma_leucophthalma_e46_LSUMZ10538_1
+	Epinecrophylla_leucophthalma_leucophthalma_e47_LSUMZ12394_0
+	Epinecrophylla_leucophthalma_leucophthalma_e47_LSUMZ12394_1
+	Epinecrophylla_leucophthalma_leucophthalma_e48_LSUMZ14575_0
+	Epinecrophylla_leucophthalma_leucophthalma_e48_LSUMZ14575_1
+	Epinecrophylla_leucophthalma_leucophthalma_e50_LSUMZ36628_0
+	Epinecrophylla_leucophthalma_leucophthalma_e50_LSUMZ36628_1
+	Epinecrophylla_leucophthalma_leucophthalma_e51_LSUMZ42670_0
+	Epinecrophylla_leucophthalma_leucophthalma_e51_LSUMZ42670_1
+	Epinecrophylla_leucophthalma_phaeonota_e53_FMNH389907_0
+	Epinecrophylla_leucophthalma_phaeonota_e53_FMNH389907_1
+	Epinecrophylla_leucophthalma_phaeonota_e54_LSUMZ35603_0
+	Epinecrophylla_leucophthalma_phaeonota_e54_LSUMZ35603_1
+	Epinecrophylla_leucophthalma_phaeonota_e55_LSUMZ77807_0
+	Epinecrophylla_leucophthalma_phaeonota_e55_LSUMZ77807_1
+	Epinecrophylla_leucophthalma_phaeonota_e56_LSUMZ78380_0
+	Epinecrophylla_leucophthalma_phaeonota_e56_LSUMZ78380_1
+	Epinecrophylla_leucophthalma_phaeonota_e57_LSUMZ80774_0
+	Epinecrophylla_leucophthalma_phaeonota_e57_LSUMZ80774_1
+	Epinecrophylla_leucophthalma_phaeonota_e58_LSUMZ80818_0
+	Epinecrophylla_leucophthalma_phaeonota_e58_LSUMZ80818_1
+	Epinecrophylla_leucophthalma_phaeonota_e59_LSUMZ85998_0
+	Epinecrophylla_leucophthalma_phaeonota_e59_LSUMZ85998_1
+	Epinecrophylla_leucophthalma_sordida_e61_FMNH392048_0
+	Epinecrophylla_leucophthalma_sordida_e61_FMNH392048_1
+	Epinecrophylla_leucophthalma_sordida_e62_FMNH457026_0
+	Epinecrophylla_leucophthalma_sordida_e62_FMNH457026_1
+	Epinecrophylla_ornata_atrogularis_e64_LSU74213_0
+	Epinecrophylla_ornata_atrogularis_e64_LSU74213_1
+	Epinecrophylla_ornata_atrogularis_e65_MSB36505_0
+	Epinecrophylla_ornata_atrogularis_e65_MSB36505_1
+	Epinecrophylla_ornata_hoffmannsi_e66_FMNH391379_0
+	Epinecrophylla_ornata_hoffmannsi_e66_FMNH391379_1
+	Epinecrophylla_ornata_hoffmannsi_e67_FMNH457051_0
+	Epinecrophylla_ornata_hoffmannsi_e67_FMNH457051_1
+	Epinecrophylla_ornata_hoffmansi_e68_LSU78113_0
+	Epinecrophylla_ornata_hoffmansi_e68_LSU78113_1
+	Epinecrophylla_ornata_meridionalis_e69_LSUMZ1082_0
+	Epinecrophylla_ornata_meridionalis_e69_LSUMZ1082_1
+	Epinecrophylla_ornata_meridionalis_e70_LSUMZ9502_0
+	Epinecrophylla_ornata_meridionalis_e70_LSUMZ9502_1
+	Epinecrophylla_ornata_meridionalis_e71_LSUMZ78808_0
+	Epinecrophylla_ornata_meridionalis_e71_LSUMZ78808_1
+	Epinecrophylla_pyrrhonota_e74_AMNH14224_0
+	Epinecrophylla_pyrrhonota_e74_AMNH14224_1
+	Epinecrophylla_pyrrhonota_e75_FMNH457014_0
+	Epinecrophylla_pyrrhonota_e75_FMNH457014_1
+	Epinecrophylla_pyrrhonota_e76_LSU4202_0
+	Epinecrophylla_pyrrhonota_e76_LSU4202_1
+	Epinecrophylla_pyrrhonota_e77_LSUMZ7505_0
+	Epinecrophylla_pyrrhonota_e77_LSUMZ7505_1
+	Epinecrophylla_pyrrhonota_e78_MZUSP79027_0
+	Epinecrophylla_pyrrhonota_e78_MZUSP79027_1
+	Epinecrophylla_spodionota_sororia_e80_FMNH474124_0
+	Epinecrophylla_spodionota_sororia_e80_FMNH474124_1
+	Epinecrophylla_spodionota_sororia_e81_KU113634_0
+	Epinecrophylla_spodionota_sororia_e81_KU113634_1
+	Epinecrophylla_spodionota_sororia_e82_LSUMZ2058_0
+	Epinecrophylla_spodionota_sororia_e82_LSUMZ2058_1
+	Epinecrophylla_spodionota_spodionota_e85_H234_0
+	Epinecrophylla_spodionota_spodionota_e85_H234_1
+	Myrmorchilus_strigilatus_LSUMZ18722_0
+	Myrmorchilus_strigilatus_LSUMZ18722_1
+	Neoctantes_niger_L2749_0
+	Neoctantes_niger_L2749_1
+;
+end;
+
+begin trees;
+	tree tree_1 = [&R] (((((((((((Epinecrophylla_amazonica_e2_LSUMZ31342_1:7.54E-4,Epinecrophylla_amazonica_e2_LSUMZ31342_0:7.25E-4):5.7E-4,(Epinecrophylla_amazonica_e3_MZUSP164_0:7.51E-4,Epinecrophylla_amazonica_e3_MZUSP164_1:7.8E-4):2.18E-4):1.3E-4,(Epinecrophylla_amazonica_e1_LSU9217_1:8.96E-4,Epinecrophylla_amazonica_e1_LSU9217_0:8.1E-4):4.11E-4):3.75E-4,(Epinecrophylla_dentei_e6_MZUSP80591_1:6.42E-4,Epinecrophylla_dentei_e6_MZUSP80591_0:5.95E-4):7.23E-4):4.74E-4,(((Epinecrophylla_spodionota_sororia_e81_KU113634_1:7.08E-4,Epinecrophylla_spodionota_sororia_e81_KU113634_0:6.73E-4):4.86E-4,(Epinecrophylla_spodionota_sororia_e82_LSUMZ2058_1:0.001567,Epinecrophylla_spodionota_sororia_e82_LSUMZ2058_0:0.001489):4.56E-4):1.74E-4,((Epinecrophylla_spodionota_spodionota_e85_H234_1:5.54E-4,Epinecrophylla_spodionota_spodionota_e85_H234_0:5.69E-4):4.84E-4,((Epinecrophylla_spodionota_sororia_e80_FMNH474124_0:7.35E-4,Epinecrophylla_spodionota_sororia_e80_FMNH474124_1:6.75E-4):2.8E-4,(Epinecrophylla_leucophthalma_leucophthalma_e44_LSUMZ5392_0:0.001047,Epinecrophylla_leucophthalma_leucophthalma_e44_LSUMZ5392_1:9.61E-4):6.18E-4):8.9E-5):8.7E-5):9.27E-4):3.46E-4,(((Epinecrophylla_pyrrhonota_e76_LSU4202_1:6.98E-4,Epinecrophylla_pyrrhonota_e76_LSU4202_0:7.66E-4):8.28E-4,(((Epinecrophylla_pyrrhonota_e75_FMNH457014_0:7.77E-4,Epinecrophylla_pyrrhonota_e75_FMNH457014_1:7.57E-4):3.55E-4,(Epinecrophylla_pyrrhonota_e74_AMNH14224_1:7.31E-4,Epinecrophylla_pyrrhonota_e74_AMNH14224_0:7.16E-4):2.28E-4):1.08E-4,((Epinecrophylla_pyrrhonota_e78_MZUSP79027_0:6.43E-4,Epinecrophylla_pyrrhonota_e78_MZUSP79027_1:6.03E-4):3.93E-4,(Epinecrophylla_pyrrhonota_e77_LSUMZ7505_0:0.00247,Epinecrophylla_pyrrhonota_e77_LSUMZ7505_1:0.002571):2.86E-4):1.0E-4):4.98E-4):8.25E-4,(((Epinecrophylla_amazonica_e5_LSUMZ75291_1:9.77E-4,Epinecrophylla_amazonica_e5_LSUMZ75291_0:7.95E-4):7.0E-4,(Epinecrophylla_haematonota_e36_LSU4579_0:0.003954,Epinecrophylla_haematonota_e36_LSU4579_1:0.003879):2.14E-4):1.04E-4,((Epinecrophylla_haematonota_haematonota_e39_LSUMZ10790_1:0.001126,Epinecrophylla_haematonota_haematonota_e39_LSUMZ10790_0:9.4E-4):6.58E-4,(((Epinecrophylla_fjeldsaai_hybrid_e15_LSUMZ42704_0:0.002079,Epinecrophylla_fjeldsaai_hybrid_e15_LSUMZ42704_1:0.002304):7.15E-4,(Epinecrophylla_fjeldsaai_e13_KU873_1:7.51E-4,Epinecrophylla_fjeldsaai_e13_KU873_0:7.78E-4):2.82E-4):1.74E-4,((Epinecrophylla_haematonota_haematonota_e42_LSUMZ93087_1:0.001208,Epinecrophylla_haematonota_haematonota_e42_LSUMZ93087_0:0.001279):3.75E-4,((Epinecrophylla_haematonota_haematonota_e40_LSUMZ27427_1:0.001008,Epinecrophylla_haematonota_haematonota_e40_LSUMZ27427_0:0.001084):2.91E-4,(Epinecrophylla_haematonota_haematonota_e41_LSUMZ42282_1:0.001049,Epinecrophylla_haematonota_haematonota_e41_LSUMZ42282_0:0.001071):7.49E-4):8.4E-5):9.1E-5):1.16E-4):9.5E-5):7.65E-4):1.35E-4):6.14E-4,((Epinecrophylla_gutturalis_e34_YPM139781_0:9.27E-4,Epinecrophylla_gutturalis_e34_YPM139781_1:9.56E-4):3.26E-4,((((Epinecrophylla_gutturalis_e31_YPM137211_0:9.73E-4,Epinecrophylla_gutturalis_e31_YPM137211_1:9.27E-4):4.72E-4,(Epinecrophylla_gutturalis_e35_LSU20398_0:0.001075,Epinecrophylla_gutturalis_e35_LSU20398_1:9.84E-4):2.44E-4):6.6E-5,(((Epinecrophylla_gutturalis_e28_LSU55218_0:8.87E-4,Epinecrophylla_gutturalis_e28_LSU55218_1:8.96E-4):2.54E-4,(Epinecrophylla_gutturalis_e26_USNM587338_0:9.34E-4,Epinecrophylla_gutturalis_e26_USNM587338_1:9.18E-4):3.12E-4):6.9E-5,((Epinecrophylla_gutturalis_e33_YPM139633_1:0.001006,Epinecrophylla_gutturalis_e33_YPM139633_0:9.49E-4):3.58E-4,(Epinecrophylla_gutturalis_e30_YPM101670_1:9.39E-4,Epinecrophylla_gutturalis_e30_YPM101670_0:9.64E-4):4.03E-4):7.1E-5):4.8E-5):5.4E-5,((Epinecrophylla_gutturalis_e29_LSUMZ71576_0:9.16E-4,Epinecrophylla_gutturalis_e29_LSUMZ71576_1:9.74E-4):2.6E-4,(((Epinecrophylla_gutturalis_e24_KU88804_1:8.14E-4,Epinecrophylla_gutturalis_e24_KU88804_0:7.21E-4):7.88E-4,(Epinecrophylla_gutturalis_e23_KU88801_0:0.001154,Epinecrophylla_gutturalis_e23_KU88801_1:0.001127):3.67E-4):1.18E-4,((Epinecrophylla_gutturalis_e22_USNM609157_0:7.79E-4,Epinecrophylla_gutturalis_e22_USNM609157_1:8.39E-4):4.2E-4,((Epinecrophylla_gutturalis_e25_USNM586379_0:7.86E-4,Epinecrophylla_gutturalis_e25_USNM586379_1:8.23E-4):2.88E-4,(Epinecrophylla_gutturalis_e20_AMNH11921_0:7.96E-4,Epinecrophylla_gutturalis_e20_AMNH11921_1:6.69E-4):6.31E-4):1.6E-4):1.05E-4):1.2E-4):6.6E-5):7.3E-5):0.001665):0.002146,((Epinecrophylla_erythrura_septentrionalis_e10_LSUMZ27716_0:0.001123,Epinecrophylla_erythrura_septentrionalis_e10_LSUMZ27716_1:0.001253):0.002485,(((Epinecrophylla_leucophthalma_leucophthalma_e51_LSUMZ42670_1:5.09E-4,Epinecrophylla_leucophthalma_leucophthalma_e51_LSUMZ42670_0:4.63E-4):6.8E-4,((Epinecrophylla_leucophthalma_leucophthalma_e46_LSUMZ10538_1:8.93E-4,Epinecrophylla_leucophthalma_leucophthalma_e46_LSUMZ10538_0:9.37E-4):7.78E-4,((Epinecrophylla_leucophthalma_leucophthalma_e45_LSUMZ9173_0:8.98E-4,Epinecrophylla_leucophthalma_leucophthalma_e45_LSUMZ9173_1:8.21E-4):4.46E-4,(Epinecrophylla_leucophthalma_dissita_e43_LSUMZ75006_0:7.1E-4,Epinecrophylla_leucophthalma_dissita_e43_LSUMZ75006_1:7.75E-4):3.59E-4):8.1E-5):1.59E-4):9.11E-4,(((Epinecrophylla_leucophthalma_sordida_e61_FMNH392048_1:6.67E-4,Epinecrophylla_leucophthalma_sordida_e61_FMNH392048_0:7.08E-4):4.48E-4,(Epinecrophylla_leucophthalma_sordida_e62_FMNH457026_1:6.44E-4,Epinecrophylla_leucophthalma_sordida_e62_FMNH457026_0:6.87E-4):5.05E-4):2.31E-4,((((Epinecrophylla_leucophthalma_phaeonota_e53_FMNH389907_1:8.21E-4,Epinecrophylla_leucophthalma_phaeonota_e53_FMNH389907_0:7.85E-4):3.34E-4,(Epinecrophylla_leucophthalma_leucophthalma_e50_LSUMZ36628_1:0.001462,Epinecrophylla_leucophthalma_leucophthalma_e50_LSUMZ36628_0:0.001575):3.33E-4):1.67E-4,((Epinecrophylla_leucophthalma_e49_LSU18242_0:6.87E-4,Epinecrophylla_leucophthalma_e49_LSU18242_1:6.92E-4):2.74E-4,((Epinecrophylla_leucophthalma_leucophthalma_e48_LSUMZ14575_1:9.64E-4,Epinecrophylla_leucophthalma_leucophthalma_e48_LSUMZ14575_0:7.73E-4):5.89E-4,(Epinecrophylla_leucophthalma_leucophthalma_e47_LSUMZ12394_0:9.24E-4,Epinecrophylla_leucophthalma_leucophthalma_e47_LSUMZ12394_1:9.27E-4):4.3E-4):1.18E-4):1.98E-4):1.21E-4,(((Epinecrophylla_leucophthalma_phaeonota_e59_LSUMZ85998_0:8.56E-4,Epinecrophylla_leucophthalma_phaeonota_e59_LSUMZ85998_1:8.61E-4):3.46E-4,(Epinecrophylla_leucophthalma_phaeonota_e56_LSUMZ78380_0:8.61E-4,Epinecrophylla_leucophthalma_phaeonota_e56_LSUMZ78380_1:8.93E-4):4.06E-4):7.5E-5,(((Epinecrophylla_leucophthalma_phaeonota_e55_LSUMZ77807_1:8.53E-4,Epinecrophylla_leucophthalma_phaeonota_e55_LSUMZ77807_0:8.83E-4):3.33E-4,(Epinecrophylla_leucophthalma_phaeonota_e58_LSUMZ80818_0:8.89E-4,Epinecrophylla_leucophthalma_phaeonota_e58_LSUMZ80818_1:9.26E-4):4.43E-4):5.7E-5,((Epinecrophylla_leucophthalma_phaeonota_e54_LSUMZ35603_0:9.03E-4,Epinecrophylla_leucophthalma_phaeonota_e54_LSUMZ35603_1:9.18E-4):3.97E-4,(Epinecrophylla_leucophthalma_phaeonota_e57_LSUMZ80774_1:9.04E-4,Epinecrophylla_leucophthalma_phaeonota_e57_LSUMZ80774_0:8.4E-4):4.13E-4):7.3E-5):5.9E-5):7.2E-5):1.09E-4):8.13E-4):0.001389):0.001632):5.78E-4,(((Epinecrophylla_ornata_atrogularis_e65_MSB36505_0:0.001337,Epinecrophylla_ornata_atrogularis_e65_MSB36505_1:0.001406):5.98E-4,(Epinecrophylla_ornata_atrogularis_e64_LSU74213_0:8.19E-4,Epinecrophylla_ornata_atrogularis_e64_LSU74213_1:9.54E-4):3.71E-4):7.43E-4,(((Epinecrophylla_ornata_hoffmansi_e68_LSU78113_1:5.63E-4,Epinecrophylla_ornata_hoffmansi_e68_LSU78113_0:5.52E-4):6.71E-4,((Epinecrophylla_ornata_hoffmannsi_e66_FMNH391379_0:6.5E-4,Epinecrophylla_ornata_hoffmannsi_e66_FMNH391379_1:6.77E-4):2.98E-4,(Epinecrophylla_ornata_hoffmannsi_e67_FMNH457051_1:6.16E-4,Epinecrophylla_ornata_hoffmannsi_e67_FMNH457051_0:6.47E-4):2.0E-4):5.53E-4):4.11E-4,((Epinecrophylla_ornata_meridionalis_e70_LSUMZ9502_1:0.001003,Epinecrophylla_ornata_meridionalis_e70_LSUMZ9502_0:9.82E-4):3.46E-4,((Epinecrophylla_ornata_meridionalis_e69_LSUMZ1082_0:8.41E-4,Epinecrophylla_ornata_meridionalis_e69_LSUMZ1082_1:8.54E-4):4.37E-4,(Epinecrophylla_ornata_meridionalis_e71_LSUMZ78808_1:9.98E-4,Epinecrophylla_ornata_meridionalis_e71_LSUMZ78808_0:0.001027):2.72E-4):1.05E-4):2.0E-4):6.79E-4):0.002747):0.001075,((Epinecrophylla_fulviventris_costaricensis_e18_LSUMZ82086_0:7.82E-4,Epinecrophylla_fulviventris_costaricensis_e18_LSUMZ82086_1:7.63E-4):5.21E-4,(Epinecrophylla_fulviventris_costaricensis_e17_LSU2299_0:8.79E-4,Epinecrophylla_fulviventris_costaricensis_e17_LSU2299_1:8.11E-4):3.08E-4):0.005901):0.003151,(Neoctantes_niger_L2749_1:0.002504,Neoctantes_niger_L2749_0:0.002534):0.00623,(Myrmorchilus_strigilatus_LSUMZ18722_0:5.02E-4,Myrmorchilus_strigilatus_LSUMZ18722_1:4.85E-4):0.011144);
+end;
+
+begin figtree;
+	set appearance.backgroundColorAttribute="Default";
+	set appearance.backgroundColour=#ffffff;
+	set appearance.branchColorAttribute="User selection";
+	set appearance.branchColorGradient=false;
+	set appearance.branchLineWidth=1.0;
+	set appearance.branchMinLineWidth=0.0;
+	set appearance.branchWidthAttribute="Fixed";
+	set appearance.foregroundColour=#000000;
+	set appearance.hilightingGradient=false;
+	set appearance.selectionColour=#2d3680;
+	set branchLabels.colorAttribute="User selection";
+	set branchLabels.displayAttribute="Branch times";
+	set branchLabels.fontName="sansserif";
+	set branchLabels.fontSize=8;
+	set branchLabels.fontStyle=0;
+	set branchLabels.isShown=false;
+	set branchLabels.significantDigits=4;
+	set layout.expansion=0;
+	set layout.layoutType="RECTILINEAR";
+	set layout.zoom=0;
+	set legend.attribute=null;
+	set legend.fontSize=10.0;
+	set legend.isShown=false;
+	set legend.significantDigits=4;
+	set nodeBars.barWidth=4.0;
+	set nodeBars.displayAttribute=null;
+	set nodeBars.isShown=false;
+	set nodeLabels.colorAttribute="User selection";
+	set nodeLabels.displayAttribute="Node ages";
+	set nodeLabels.fontName="sansserif";
+	set nodeLabels.fontSize=8;
+	set nodeLabels.fontStyle=0;
+	set nodeLabels.isShown=false;
+	set nodeLabels.significantDigits=4;
+	set nodeShape.colourAttribute="User selection";
+	set nodeShape.isShown=false;
+	set nodeShape.minSize=10.0;
+	set nodeShape.scaleType=Width;
+	set nodeShape.shapeType=Circle;
+	set nodeShape.size=4.0;
+	set nodeShape.sizeAttribute="Fixed";
+	set polarLayout.alignTipLabels=false;
+	set polarLayout.angularRange=0;
+	set polarLayout.rootAngle=0;
+	set polarLayout.rootLength=100;
+	set polarLayout.showRoot=true;
+	set radialLayout.spread=0.0;
+	set rectilinearLayout.alignTipLabels=false;
+	set rectilinearLayout.curvature=0;
+	set rectilinearLayout.rootLength=100;
+	set scale.offsetAge=0.0;
+	set scale.rootAge=1.0;
+	set scale.scaleFactor=1.0;
+	set scale.scaleRoot=false;
+	set scaleAxis.automaticScale=true;
+	set scaleAxis.fontSize=8.0;
+	set scaleAxis.isShown=false;
+	set scaleAxis.lineWidth=1.0;
+	set scaleAxis.majorTicks=1.0;
+	set scaleAxis.origin=0.0;
+	set scaleAxis.reverseAxis=false;
+	set scaleAxis.showGrid=true;
+	set scaleBar.automaticScale=true;
+	set scaleBar.fontSize=10.0;
+	set scaleBar.isShown=true;
+	set scaleBar.lineWidth=1.0;
+	set scaleBar.scaleRange=0.0;
+	set tipLabels.colorAttribute="User selection";
+	set tipLabels.displayAttribute="Names";
+	set tipLabels.fontName="sansserif";
+	set tipLabels.fontSize=8;
+	set tipLabels.fontStyle=0;
+	set tipLabels.isShown=true;
+	set tipLabels.significantDigits=4;
+	set trees.order=true;
+	set trees.orderType="decreasing";
+	set trees.rooting=true;
+	set trees.rootingType="User Selection";
+	set trees.transform=false;
+	set trees.transformType="cladogram";
+end;
+
