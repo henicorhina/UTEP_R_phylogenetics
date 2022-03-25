@@ -1,7 +1,8 @@
 ---
-title: "workshop_code"
+title: "UTEP_workshop_code"
 output: html_document
 date: '2022-03-23'
+author: "Oscar Johnson"
 ---
 
 ```{r setup, include=FALSE}
@@ -16,7 +17,7 @@ vcftools: https://vcftools.github.io/man_latest.html
 PGDspider: http://www.cmpg.unibe.ch/software/PGDSpider/
 Phyluce: https://phyluce.readthedocs.io/en/latest/index.html
 
-Custom code repos: 
+Custom code repos:
 https://github.com/edgardomortiz/vcf2phylip
 https://github.com/mgharvey/misc_python
 https://github.com/mgharvey/seqcap_pop/
@@ -24,7 +25,6 @@ https://github.com/mgharvey/seqcap_pop/
 Tons of great info here:
 https://grunwaldlab.github.io/Population_Genetics_in_R/index.html
 https://yulab-smu.top/treedata-book/chapter1.html
-
 
 # load packages
 
@@ -431,7 +431,12 @@ Let's edit them
 tree$tip.label[2]
 tree$tip.label <- str_replace(tree$tip.label, "Epinecrophylla_", "")
 tree$tip.label <- str_replace(tree$tip.label, "_1", "")
-plot.phylo(tree)
+
+# next, we'll need to re-root the tree on a specific tip or node. Here we'll use an outgroup tip:
+
+tree <- root(tree, "Myrmorchilus_strigilatus_LSUMZ18722", resolve.root = TRUE)
+
+plot.phylo(ladderize(tree))
 
 ```
 
@@ -441,7 +446,7 @@ A bit about tree structure
 
 ```{r}
 
-plot.phylo(tree, show.tip.label = FALSE)
+plot.phylo(ladderize(tree), show.tip.label = FALSE)
 tiplabels()
 nodelabels()
 edgelabels()
@@ -513,31 +518,53 @@ paste0("RF distance: ", RF, ", and weighted RF distance: ", round(wRF, 6))
 
 We can also make these plots look pretty and save the output
 treeio and ggtree are better for this 
-First, we'll need to re-root the tree on a specific tip or node. Here we'll use a node:
 
 ```{r}
 
-tree.plot <- treeio::read.newick("data/trees/RAxML_bipartitions.Epinecrophylla-75percent-final.tre")
 tree.plot <- treeio::read.nexus("data/trees/Figure_3B_snap.Epinecrophylla_toClade_x2_priors.MCC.tre")
 
-to.root <- getMRCA(tree.plot, 
-                   c("Myrmorchilus_strigilatus_LSUMZ18722_1", "Neoctantes_niger_L2749_1"))
-tree.plot <- root(tree.plot, node = to.root, resolve.root = TRUE)
 
+p <- ggtree(tree.plot) +
+  geom_tiplab(as_ylab=TRUE) +
+  geom_treescale(fontsize = 3) +
+  geom_nodepoint()
+p
+ggsave("results/treeio.plot.pdf")
 
-# and plot
-ggplot(tree.plot, aes(x, y, group=label)) + geom_tree() + theme_tree()
-mapping = aes(
-          x = branch,
-          label = bootstrap
-        )
-
-
-structure <- read.csv("data/structure_data.csv", 
-                      header = FALSE,
-                      row.names = 1)
-
+ggtree(tree.plot, layout="equal_angle", open.angle=120)
 
 ```
+
+# tree with support values
+
+```{r}
+
+tree.plot.raxml <- treeio::read.newick(file="data/trees/RAxML_bipartitions.Epinecrophylla-75percent-final.tre", node.label='support')
+
+tree.plot.raxml = treeio::tree_subset(tree.plot.raxml, "Epinecrophylla_haematonota_e36_LSU4579_1", levels_back=3)  
+
+p <- ggtree(tree.plot.raxml) +
+  geom_tiplab(as_ylab=TRUE) +
+  geom_treescale(fontsize = 3) 
+p + geom_nodelab(geom='label', aes(label=support))
+p + geom_nodelab(geom='label', aes(label=support, subset=support < 95))
+
+```
+
+# DensiTree
+
+Visualizing posterior of species trees. 
+Here, we'll load 100 trees from the posterior of a SNAPP run
+
+```{r}
+
+boot.trees <- treeio::read.beast("data/trees/snap.Epinecrophylla_posterior.trees")
+
+ggdensitree(boot.trees, alpha=.3, colour='steelblue') + 
+    geom_tiplab(size=3) + hexpand(.35)
+
+```
+
+
 
 
