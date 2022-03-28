@@ -1,0 +1,581 @@
+---
+title: "UTEP_workshop_code"
+output: html_document
+date: '2022-03-23'
+author: "Oscar Johnson"
+https://github.com/henicorhina/UTEP_R_phylogenetics
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## File conversion. Most are command-line tools
+
+TriFusion: https://github.com/ODiogoSilva/TriFusion
+plink: https://zzz.bwh.harvard.edu/plink/
+vcftools: https://vcftools.github.io/man_latest.html
+PGDspider: http://www.cmpg.unibe.ch/software/PGDSpider/
+Phyluce: https://phyluce.readthedocs.io/en/latest/index.html
+
+Custom code repos:
+https://github.com/edgardomortiz/vcf2phylip
+https://github.com/mgharvey/misc_python
+https://github.com/mgharvey/seqcap_pop/
+
+Tons of great info here:
+https://grunwaldlab.github.io/Population_Genetics_in_R/index.html
+https://yulab-smu.top/treedata-book/chapter1.html
+
+# load packages
+
+```{r, echo=FALSE}
+
+# population genetics packages
+library(genepop)
+library(PopGenome)
+library(adegenet)
+library(poppr)
+library(pegas)
+library(hierfstat)
+
+# phylogenetics packages
+library(ape)
+library(caper)
+library(phytools)
+library(phangorn)
+library(ggtree)
+library(treeio)
+
+# data manipulation and organization packages
+library(here)
+library(dplyr)
+library(stringr)
+library(randomcoloR)
+
+
+# define working folder path
+here::i_am("workshop_code.Rmd")
+```
+
+
+# PopGenome package
+https://cran.r-project.org/web/packages/PopGenome/vignettes/Whole_genome_analyses_using_VCF_files.pdf
+
+For descriptive statistics of population differentiation (Fst, Gst, Dxy)
+Works with nucleotide alignment data
+Folder should include separate alignment files for each locus
+Fast! This example is for 2193 UCE loci
+I have included just 200 loci in the GitHub repo due to file size constraints, 
+so your results values might be slightly different
+
+First, let's load in our data
+
+Example data alignment: 
+NEXUS
+begin data;
+dimensions ntax=6 nchar=520;
+format datatype=dna missing=? gap=-;
+matrix
+cryptoleucus_139_LSU25431_0   ttaggacccctgctgtctgaaaagagatcaaagctcaggaggaggctgtaaaacagccgaatgcactgcacagaaacatg
+cryptoleucus_139_LSU25431_1   ttaggacccctgctgtctgaaaagagatcaaagctcaggaggaggctgtaaaacagccgaatgcactgcacagaaacatg
+cryptoleucus_141_LSU74103_0   ttaggacccctgctgtctgaaaagagatcaaagctcaggaggaggctgtaaaacagccgaatgcactgcacagaaacatg
+cryptoleucus_141_LSU74103_1   ttaggacccctgctgtctgaaaagagatcaaagctcaggaggaggctgtaaaacagccgaatgcactgcacagaaacatg
+cryptoleucus_142_LSU7285_0    ttaggacccctgctgtctgaaaagagatcaaagctcaggaggaggctgtaaaacagccgaatgcactgcacagaaacatg
+cryptoleucus_142_LSU7285_1    ttaggacccctgctgtctgaaaagagatcaaagctcaggaggaggctgtaaaacagccgaatgcactgcacagaaacatg
+;
+end;
+
+```{r, echo=FALSE}
+
+folder_name <- "data/Epinecrophylla-phased-nexus-alignment"
+GENOME.class <- readData(folder_name, format = 'nexus')
+
+```
+
+
+# Fst (fixation index)
+
+Next, we need to assign individuals to populations
+First, let's assign each individual to its own population 
+This will give an overall measure of population differentiation within the species
+
+```{r}
+
+sp <- get.individuals(GENOME.class)[[2]]
+sp[1:6]
+
+# data are phased, so each individual is represented by two sequences (each = 2)
+GENOME.class <- set.populations(GENOME.class, unname(
+  split(sp, rep(1:(length(sp)/2), each = 2))))
+
+# Fst / Gst
+GENOME.class <- F_ST.stats(GENOME.class)
+
+# these results are stored as a massive per-locus matrix
+# so I've saved it to a dataframe and taken the mean across all loci for each statistic
+res <- as.data.frame(get.F_ST(GENOME.class))
+res[1:5,]
+colMeans(res, na.rm = TRUE)
+
+```
+
+
+# Dxy
+
+Dxy is the degree of population differentiation
+and is calculated as the amount of nucleotide diversity between populations, per site
+
+```{r}
+
+GENOME.class <- diversity.stats.between(GENOME.class)
+
+GENOME.class@nuc.diversity.between[1:5,1:10]
+GENOME.class@n.sites[1:9]
+
+dxy <- mean(GENOME.class@nuc.diversity.between / GENOME.class@n.sites)
+dxy
+```
+
+
+# statistics per population
+
+These data are for a species complex, so let's re-assign
+individuals to a priori populations, perhaps subspecies
+
+```{r}
+
+pops <- split(sp, c("1", "1", "2", "2", "6", "6", "3", "3", "3", "3", 
+                    "1", "1", "3", "3", "4", "4", "2", "2", "2", "2", 
+                    "2", "2", "6", "6", "5", "5", "4", "4", "1", "1",
+                    "2", "2", "3", "3", "2", "2", "4", "4", "3", "3", 
+                    "4", "4"))
+names(pops) <- c("amazonica", "haematonota", "pyrrhonota", "spodionota", "dentei", "fjeldsaai")
+GENOME.class.2 <- set.populations(GENOME.class, pops)
+
+# We can check that this worked:
+GENOME.class.2@populations
+
+# Fst / Gst
+GENOME.class.2 <- F_ST.stats(GENOME.class.2)
+res.pairwise <- as.data.frame(GENOME.class.2@Nei.G_ST.pairwise)
+Fst.res.pairwise <- rowMeans(res.pairwise, na.rm = TRUE)
+round(Fst.res.pairwise, 3)
+
+
+```
+
+
+
+We can also calculate simple diversity statistics for each population
+say, nucleotide diversity
+
+```{r}
+
+GENOME.class.2 <- diversity.stats(GENOME.class.2)
+
+# this command lists five diversity stats, if you're interested
+# the slot at the end pulls the data for a given population (e.g. 1,2,3)
+res.pop.t <- get.diversity(GENOME.class.2)
+res.pop <- apply(res.pop.t, 1, function (x) colMeans(as.data.frame(x)))
+round(res.pop, 3)
+
+```
+
+
+
+# SNP data
+
+PopGenome can also work with SNP data, stored in the variant call format (.vcf)
+
+```{r}
+
+GENOME.class.vcf <- readData("data/vcf_snps", format = 'VCF')
+
+sp.vcf <- get.individuals(GENOME.class.vcf)[[1]]
+pops.vcf <- split(sp.vcf, c("1", "1", "1", "1", 
+                    "2", "2", 
+                    "3", "3", "3", "3", 
+                    "4", "4", "4", "4",
+                    "5", "5", "5", "5", 
+                    "6", "6", "6", "6", "6", "6",
+                    "7", "7", "7", "7", "7", "7", "7", "7"
+                    ))
+names(pops.vcf) <- c("amazonica", "dentei", "fjeldsaai", "gutturalis", "haematonota", "pyrrhonota", "spodionota")
+
+GENOME.class.vcf <- set.populations(GENOME.class.vcf, pops.vcf)
+
+GENOME.class.vcf <- F_ST.stats(GENOME.class.vcf)
+round(GENOME.class.vcf@Nei.G_ST.pairwise, 3)
+
+
+```
+
+
+We can also measure neutrality statistics, such as Tajima's D,
+which is a measure of selection
+
+```{r}
+
+GENOME.class.vcf <- neutrality.stats(GENOME.class.vcf, FAST=TRUE)
+
+# save all stats
+neutrality <- get.neutrality(GENOME.class.vcf) 
+
+# print just Tajima's D
+TajimaD <- GENOME.class.vcf@Tajima.D
+round(TajimaD, 3)
+
+```
+
+
+Waterson's Theta (effective population size)
+
+```{r}
+
+round(GENOME.class.vcf@theta_Watterson, 3)
+
+```
+
+
+# introgression 
+
+We can also calculate archaic introgression between populations from SNP data
+using Patterson's D statistic (ABBA/BABA tests). 
+This requires at least three populations, plus an outgroup. 
+
+Phylogeny 
+
+  |-------- gutturalis
+--|
+  |  |----- pyrrhonota
+  |--|
+     |  |-- haematonota
+     |--|
+        |-- fjeldsaai
+
+
+```{r}
+
+pops.temp <- pops.vcf[c("pyrrhonota", "haematonota", "fjeldsaai")]
+
+GENOME.class.vcf <- set.populations(GENOME.class.vcf, pops.temp)
+GENOME.class.vcf <- set.outgroup(GENOME.class.vcf, "Epinecrophylla_gutturalis_e26_USNM587338.2")
+
+GENOME.class.vcf <- introgression.stats(GENOME.class.vcf, do.D=TRUE)
+GENOME.class.vcf <- introgression.stats(GENOME.class.vcf, do.df=TRUE)
+
+paste0("Pattersons D: ", round(GENOME.class.vcf@D, 3)) 
+paste0("Martin’s f statistic (fraction of the genome that is admixed): ", round(GENOME.class.vcf@f, 3))
+paste0("and this fraction correcting for pairwise differences: ",  round(GENOME.class.vcf@df, 3))
+
+```
+
+
+
+Although this method does work, I recommend other software, such as Dsuite, for this purpose.
+or TreeMix and FastSimCoal
+
+PopGenome can also work with whole genome data, and sliding-window analyses,
+plus calculate many more statistics
+More information in the manual and vignettes:
+https://cran.r-project.org/web/packages/PopGenome/vignettes/Whole_genome_analyses_using_VCF_files.pdf
+https://cran.r-project.org/web/packages/PopGenome/PopGenome.pdf
+
+
+
+
+# Genepop package
+good for isolation-by-distance calculations
+genepop format from .vcf:
+https://github.com/mgharvey/seqcap_pop/blob/master/bin/genepop_from_vcf.py
+
+Genepop format:
+Pop
+8.56	-61.57 knipolegus_orenocensis_46_COP882, 0202 0101 0202 0101 0101 0101 0202 0101 0101 0101 0101 0101 0202 0101 0102 0202 0101 0101 0101 0101 0102 0101 
+Pop
+5.48	-67.62 knipolegus_orenocensis_47_COP629, 0000 0101 0202 0101 0101 0101 0202 0101 0101 0101 0101 0101 0202 0101 0101 0202 0101 0102 0101 0101 0101 0101
+
+
+# Isolation-by-distance
+
+```{r}
+
+# define the input and output files
+locinfile <- 'data/Knipolegus_orenocensis_SNPs_GenePop.IBD.txt'
+outfile <- paste0('results/Knipolegus_orenocensis_GenePop.ISO.e')
+ibd(locinfile,
+    outputFile = outfile, 
+    statistic = 'e')
+
+res.e <- read.table(outfile, sep = '\t', header = FALSE)
+res.e <- res.e %>% dplyr::filter(str_detect(V1, "a = "))
+paste0("IBD results for intercept (a) and slope (b): ", res.e[1,])
+
+```
+
+
+# adegenet and poppr
+
+https://github.com/thibautjombart/adegenet/wiki/Tutorials
+
+Note: adegenet and Genepop accept the same data format, but require different file extension names
+The files are identical except for .txt vs .gen
+adegenet can also accept structure and genetix files. 
+
+```{r}
+
+locinfile <- 'data/Knipolegus_orenocensis_SNPs_GenePop.IBD.by_subspecies.gen'
+knipolegus.genind <- read.genepop(locinfile)
+
+# we can convert to other formats
+knipolegus.genepop <- genind2genpop(knipolegus.genind)
+inds.df <- genind2df(knipolegus.genind)
+dim(inds.df)
+inds.df[1:10, 1:5]
+
+sums <- summary(knipolegus.genind)
+sums$n.by.pop
+
+# summary information, from poppr package
+head(locus_table(knipolegus.genind))
+
+```
+
+
+We can do many of the same descriptive statistics in these packages! 
+
+```{r}
+
+# test for Hardy-Weinberg equilibrium (pegas package)
+knipolegus.hwt <- hw.test(knipolegus.genind, B=0)
+round(knipolegus.hwt[1:10,], 3)
+round(mean(knipolegus.hwt[,3], na.rm = TRUE), 4)
+
+```
+
+```{r}
+
+# per-locus Weir-Cockerham Fst (from pegas)
+fst.locus <- Fst(as.loci(knipolegus.genind))
+round(fst.locus[1:10,], 3)
+round(mean(fst.locus[,2], na.rm = TRUE), 3)
+
+```
+
+```{r}
+
+# overall Weir-Cockerham Fst (from hierfstat)
+fst.overall <- wc(knipolegus.genind)
+fst.overall
+
+# pairwise Fst with Nei's estimator
+matFst <- genet.dist(knipolegus.genind, method = "Nei87")
+matFst
+
+```
+
+
+# Amount of missing data per locus in each population
+
+```{r}
+
+missing.pop <- poppr::info_table(knipolegus.genind)
+
+#show first ten loci
+missing.pop[,1:10]
+
+```
+
+
+# Missingness per individual
+
+```{r}
+missing.ind <- info_table(knipolegus.genind, type = "ploidy")
+missing.ind[,1:10]
+
+```
+
+# removing missing data
+
+```{r}
+
+# removes loci
+knipolegus.trimmed.loci <- knipolegus.genind %>% 
+  missingno("loci", cutoff = 0.10)
+knipolegus.trimmed.loci
+
+# removes individuals
+knipolegus.trimmed.inds <- knipolegus.genind %>% 
+  missingno("geno", cutoff = 0.10)
+knipolegus.trimmed.inds
+
+# trim loci after removing problematic individual
+knipolegus.trimmed.all <- knipolegus.trimmed.inds %>% 
+  missingno("loci", cutoff = 0.10)
+knipolegus.trimmed.all
+
+```
+
+
+
+# Phylogenetics
+Read in trees and edit
+package "ape"
+
+```{r}
+
+tree <- read.newick(file="data/trees/Epinecrophylla-exabayes-treePL-75p-intree.dated.tre")
+summary.phylo(tree)
+plot.phylo(tree)
+
+```
+
+Those tip labels are pretty excessively long
+Let's edit them
+
+```{r}
+tree$tip.label[2]
+tree$tip.label <- str_replace(tree$tip.label, "Epinecrophylla_", "")
+tree$tip.label <- str_replace(tree$tip.label, "_1", "")
+
+# next, we'll need to re-root the tree on a specific tip or node. Here we'll use an outgroup tip:
+
+tree <- root(tree, "Myrmorchilus_strigilatus_LSUMZ18722", resolve.root = TRUE)
+
+plot.phylo(ladderize(tree))
+
+```
+
+
+
+A bit about tree structure
+
+```{r}
+
+plot.phylo(ladderize(tree), show.tip.label = FALSE)
+tiplabels()
+nodelabels()
+edgelabels()
+
+```
+
+
+
+If we want to just look at one part of the tree, we can extract subclades
+
+
+
+```{r}
+
+node <- getMRCA(tree, c("gutturalis_e20_AMNH11921", "dentei_e6_MZUSP80591"))
+tree.sub <- extract.clade(tree, node)
+plot.phylo(tree.sub)
+
+tree.sub$tip.label
+tree.sub <- keep.tip(tree.sub, tree.sub$tip.label[13:35])
+tree.sub$tip.label <- gsub("amazonica_e5_LSUMZ75291", "haematonota_e5_LSUMZ75291", tree.sub$tip.label)
+tree.sub$tip.label <- gsub("leucophthalma_leucophthalma_e44_LSUMZ5392", 
+                       "spodionota_e44_LSUMZ5392", tree.sub$tip.label)
+plot.phylo(tree.sub)
+
+write.tree(tree.sub, file = "data/trees/Epinecrophylla-exabayes-treePL-75p-intree.dated.subsampled.tre")
+
+```
+
+# more plotting options
+
+```{r}
+
+plot.phylo(tree.sub, show.tip.label = FALSE, type = "unrooted")
+plot.phylo(tree.sub, type = "fan", cex=0.4)
+
+tree.sub <- drop.tip(tree.sub, "gutturalis_e20_AMNH11921")
+plot.phylo(tree.sub)
+
+
+rand.colors <- randomColor(count = length(tree.sub$tip.label), hue = c("random"))
+names(rand.colors) <- tree.sub$tip.label
+plot.phylo(tree.sub, show.tip.label = FALSE, type = "fan", cex=0.4)
+tiplabels(pch=20, col=rand.colors, cex=4)
+
+```
+
+
+# Tree distances
+
+Calculate the Robinson-Foulds distance between two trees
+Here, I've loaded two trees estimated from the same samples but using two 
+different methods, ExaBayes and RAxML
+
+```{r}
+
+tree.exabayes <- read.nexus(file="data/trees/Epinecrophylla-exabayes-75.tre")
+tree.raxml <- read.tree(file="data/trees/RAxML_bipartitions.Epinecrophylla-75percent-final.tre")
+
+plot.phylo(tree.exabayes, show.tip.label = FALSE, type = "unrooted")
+plot.phylo(tree.raxml, show.tip.label = FALSE, type = "unrooted")
+
+RF <- RF.dist(tree.exabayes, tree.raxml)
+wRF <- wRF.dist(tree.exabayes, tree.raxml)
+
+paste0("RF distance: ", RF, ", and weighted RF distance: ", round(wRF, 6)) 
+
+```
+
+
+We can also make these plots look pretty and save the output
+treeio and ggtree are better for this 
+
+```{r}
+
+tree.plot <- treeio::read.nexus("data/trees/Figure_3B_snap.Epinecrophylla_toClade_x2_priors.MCC.tre")
+
+p <- ggtree(tree.plot) +
+        geom_tiplab(as_ylab=TRUE) +
+        geom_treescale(fontsize = 3) +
+        geom_nodepoint()
+p
+ggsave("results/treeio.plot.pdf")
+
+```
+
+```{r}
+
+ggtree(tree.plot, layout="equal_angle", open.angle=120)
+
+```
+
+# tree with support values
+
+```{r}
+
+tree.plot.raxml <- treeio::read.newick(file="data/trees/RAxML_bipartitions.Epinecrophylla-75percent-final.tre", node.label='support')
+
+tree.plot.raxml = treeio::tree_subset(tree.plot.raxml, "Epinecrophylla_haematonota_e36_LSU4579_1", levels_back=3)  
+
+q <- ggtree(tree.plot.raxml) +
+  geom_tiplab(as_ylab=TRUE) +
+  geom_treescale(fontsize = 3) 
+q + geom_nodelab(geom='label', aes(label=support))
+q + geom_nodelab(geom='label', aes(label=support, subset=support < 95))
+
+```
+
+# DensiTree
+
+Visualizing posterior of species trees. 
+Here, we'll load 100 trees from the posterior of a SNAPP run
+
+```{r}
+
+boot.trees <- treeio::read.beast("data/trees/snap.Epinecrophylla_posterior.trees")
+
+ggdensitree(boot.trees, alpha=.3, colour='steelblue') + 
+    geom_tiplab(size=3) + hexpand(.35)
+
+```
+
+
+
+
