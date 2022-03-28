@@ -55,11 +55,21 @@ library(randomcoloR)
 
 
 # define working folder path
-here::i_am("workshop_code.R")
+here::i_am("workshop_code.Rmd")
 ```
 
 
-## DNA sequence data
+# PopGenome package
+https://cran.r-project.org/web/packages/PopGenome/vignettes/Whole_genome_analyses_using_VCF_files.pdf
+
+For descriptive statistics of population differentiation (Fst, Gst, Dxy)
+Works with nucleotide alignment data
+Folder should include separate alignment files for each locus
+Fast! This example is for 2193 UCE loci
+I have included just 200 loci in the GitHub repo due to file size constraints, 
+so your results values might be slightly different
+
+First, let's load in our data
 
 Example data alignment: 
 NEXUS
@@ -76,17 +86,6 @@ cryptoleucus_142_LSU7285_1    ttaggacccctgctgtctgaaaagagatcaaagctcaggaggaggctgta
 ;
 end;
 
-
-# PopGenome package
-https://cran.r-project.org/web/packages/PopGenome/vignettes/Whole_genome_analyses_using_VCF_files.pdf
-
-For descriptive statistics of population differentiation (Fst, Gst, Dxy)
-Works with nucleotide alignment data
-Folder should include separate alignment files for each locus
-Fast! This example is for 2193 loci
-
-First, let's load in our data
-
 ```{r, echo=FALSE}
 
 folder_name <- "data/Epinecrophylla-phased-nexus-alignment"
@@ -94,6 +93,8 @@ GENOME.class <- readData(folder_name, format = 'nexus')
 
 ```
 
+
+# Fst (fixation index)
 
 Next, we need to assign individuals to populations
 First, let's assign each individual to its own population 
@@ -128,10 +129,14 @@ and is calculated as the amount of nucleotide diversity between populations, per
 ```{r}
 
 GENOME.class <- diversity.stats.between(GENOME.class)
-dxy <- mean(GENOME.class@nuc.diversity.between / GENOME.class@n.sites)
 
+GENOME.class@nuc.diversity.between[1:5,1:10]
+GENOME.class@n.sites[1:9]
+
+dxy <- mean(GENOME.class@nuc.diversity.between / GENOME.class@n.sites)
 dxy
 ```
+
 
 # statistics per population
 
@@ -142,18 +147,18 @@ individuals to a priori populations, perhaps subspecies
 
 pops <- split(sp, c("1", "1", "2", "2", "6", "6", "3", "3", "3", "3", 
                     "1", "1", "3", "3", "4", "4", "2", "2", "2", "2", 
-                    "1", "1", "6", "6", "5", "5", "4", "4", "1", "1",
+                    "2", "2", "6", "6", "5", "5", "4", "4", "1", "1",
                     "2", "2", "3", "3", "2", "2", "4", "4", "3", "3", 
                     "4", "4"))
 names(pops) <- c("amazonica", "haematonota", "pyrrhonota", "spodionota", "dentei", "fjeldsaai")
-GENOME.class <- set.populations(GENOME.class, pops)
+GENOME.class.2 <- set.populations(GENOME.class, pops)
 
 # We can check that this worked:
-GENOME.class@populations
+GENOME.class.2@populations
 
 # Fst / Gst
-GENOME.class <- F_ST.stats(GENOME.class)
-res.pairwise <- as.data.frame(GENOME.class@Nei.G_ST.pairwise)
+GENOME.class.2 <- F_ST.stats(GENOME.class.2)
+res.pairwise <- as.data.frame(GENOME.class.2@Nei.G_ST.pairwise)
 Fst.res.pairwise <- rowMeans(res.pairwise, na.rm = TRUE)
 round(Fst.res.pairwise, 3)
 
@@ -167,11 +172,11 @@ say, nucleotide diversity
 
 ```{r}
 
-GENOME.class <- diversity.stats(GENOME.class)
+GENOME.class.2 <- diversity.stats(GENOME.class.2)
 
 # this command lists five diversity stats, if you're interested
 # the slot at the end pulls the data for a given population (e.g. 1,2,3)
-res.pop.t <- get.diversity(GENOME.class)
+res.pop.t <- get.diversity(GENOME.class.2)
 res.pop <- apply(res.pop.t, 1, function (x) colMeans(as.data.frame(x)))
 round(res.pop, 3)
 
@@ -201,7 +206,7 @@ names(pops.vcf) <- c("amazonica", "dentei", "fjeldsaai", "gutturalis", "haematon
 GENOME.class.vcf <- set.populations(GENOME.class.vcf, pops.vcf)
 
 GENOME.class.vcf <- F_ST.stats(GENOME.class.vcf)
-GENOME.class.vcf@Nei.G_ST.pairwise
+round(GENOME.class.vcf@Nei.G_ST.pairwise, 3)
 
 
 ```
@@ -269,7 +274,7 @@ paste0("and this fraction correcting for pairwise differences: ",  round(GENOME.
 
 
 Although this method does work, I recommend other software, such as Dsuite, for this purpose.
-
+or TreeMix and FastSimCoal
 
 PopGenome can also work with whole genome data, and sliding-window analyses,
 plus calculate many more statistics
@@ -303,8 +308,8 @@ ibd(locinfile,
     outputFile = outfile, 
     statistic = 'e')
 
-res <- read.table(outfile, sep = '\t', header = FALSE)
-res.e <- res %>% dplyr::filter(str_detect(V1, "a = "))
+res.e <- read.table(outfile, sep = '\t', header = FALSE)
+res.e <- res.e %>% dplyr::filter(str_detect(V1, "a = "))
 paste0("IBD results for intercept (a) and slope (b): ", res.e[1,])
 
 ```
@@ -344,7 +349,7 @@ We can do many of the same descriptive statistics in these packages!
 
 # test for Hardy-Weinberg equilibrium (pegas package)
 knipolegus.hwt <- hw.test(knipolegus.genind, B=0)
-knipolegus.hwt[1:10,]
+round(knipolegus.hwt[1:10,], 3)
 round(mean(knipolegus.hwt[,3], na.rm = TRUE), 4)
 
 ```
@@ -353,7 +358,7 @@ round(mean(knipolegus.hwt[,3], na.rm = TRUE), 4)
 
 # per-locus Weir-Cockerham Fst (from pegas)
 fst.locus <- Fst(as.loci(knipolegus.genind))
-fst.locus[1:10,]
+round(fst.locus[1:10,], 3)
 round(mean(fst.locus[,2], na.rm = TRUE), 3)
 
 ```
@@ -375,7 +380,7 @@ matFst
 
 ```{r}
 
-missing.pop <- info_table(knipolegus.genind)
+missing.pop <- poppr::info_table(knipolegus.genind)
 
 #show first ten loci
 missing.pop[,1:10]
@@ -416,7 +421,7 @@ knipolegus.trimmed.all
 
 # Phylogenetics
 Read in trees and edit
-
+package "ape"
 
 ```{r}
 
@@ -477,6 +482,7 @@ plot.phylo(tree.sub)
 write.tree(tree.sub, file = "data/trees/Epinecrophylla-exabayes-treePL-75p-intree.dated.subsampled.tre")
 
 ```
+
 # more plotting options
 
 ```{r}
@@ -525,13 +531,16 @@ treeio and ggtree are better for this
 
 tree.plot <- treeio::read.nexus("data/trees/Figure_3B_snap.Epinecrophylla_toClade_x2_priors.MCC.tre")
 
-
 p <- ggtree(tree.plot) +
-  geom_tiplab(as_ylab=TRUE) +
-  geom_treescale(fontsize = 3) +
-  geom_nodepoint()
+        geom_tiplab(as_ylab=TRUE) +
+        geom_treescale(fontsize = 3) +
+        geom_nodepoint()
 p
 ggsave("results/treeio.plot.pdf")
+
+```
+
+```{r}
 
 ggtree(tree.plot, layout="equal_angle", open.angle=120)
 
@@ -545,11 +554,11 @@ tree.plot.raxml <- treeio::read.newick(file="data/trees/RAxML_bipartitions.Epine
 
 tree.plot.raxml = treeio::tree_subset(tree.plot.raxml, "Epinecrophylla_haematonota_e36_LSU4579_1", levels_back=3)  
 
-p <- ggtree(tree.plot.raxml) +
+q <- ggtree(tree.plot.raxml) +
   geom_tiplab(as_ylab=TRUE) +
   geom_treescale(fontsize = 3) 
-p + geom_nodelab(geom='label', aes(label=support))
-p + geom_nodelab(geom='label', aes(label=support, subset=support < 95))
+q + geom_nodelab(geom='label', aes(label=support))
+q + geom_nodelab(geom='label', aes(label=support, subset=support < 95))
 
 ```
 
